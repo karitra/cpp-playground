@@ -14,7 +14,6 @@ struct Foo {
 
 struct A {
 
-	// not working A() : some_data{ new Foo() } {}
 	A() { 
 		some_data.uptr.reset(new Foo());
 	}
