@@ -33,6 +33,6 @@ int main(int argc, char **argv)
 	a.some_data.uptr->inc(add);
 	ref->inc(add);
  
-	return ref->z;
+	return a.some_data.uptr->z;
 }
 
