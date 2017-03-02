@@ -23,7 +23,7 @@ struct payload_t {
 };
 
 typedef std::map<double, payload_t> mapping_t;
-typedef mapping_t::value_type pair_t;
+typedef std::pair<double, payload_t> pair_t;
 
 struct pair_comparator_t {
     bool operator()(const pair_t &a, const pair_t &b) {
@@ -31,12 +31,33 @@ struct pair_comparator_t {
     }
 };
 
+constexpr pair_comparator_t heap_cmp;
+
 typedef std::set<pair_t, pair_comparator_t> setting_t;
 typedef std::vector<pair_t> heap_t;
 
+template<typename Container>
+void reformat(Container &c) {
+    Container new_one;
+    std::copy(std::begin(c), std::end(c), std::inserter(c, std::end(c)));
+    c.swap(new_one);
+}
+
+template<>
+void reformat(heap_t &h) {
+    for(auto &z : h) {
+        z.first *= 0.33;
+    }
+    std::make_heap(std::begin(h), std::end(h), heap_cmp);
+}
+
 struct direct_order_updater_t {
     template<typename Container>
-    void operator()(Container &c, const double val, const size_t limit) const {
+    void operator()(Container &c, const size_t iter, const double val, const size_t limit) const {
+        if (iter % 100) {
+                reformat(c);
+        }
+
         c.emplace(val, payload_t{val, val} );
         if (c.size() > limit) {
             c.erase(c.begin());
@@ -46,7 +67,11 @@ struct direct_order_updater_t {
 
 struct reverse_order_updater_t {
     template<typename Container>
-    void operator()(Container &c, const double val, const size_t limit) const {
+    void operator()(Container &c, const size_t iter, const double val, const size_t limit) const {
+        if (iter % 100) {
+                reformat(c);
+        }
+
         if (c.size() >= limit) {
             c.erase(c.begin());
         }
@@ -57,23 +82,26 @@ struct reverse_order_updater_t {
 
 struct heap_updater_t {
     template<typename Container>
-    void operator()(Container &c, const double val, const size_t limit) const {
+    void operator()(Container &c, const size_t iter, const double val, const size_t limit) const {
+        if (iter % 100) {
+                reformat(c);
+        }
+
         if (c.size() >= limit) {
-            pop_heap(std::begin(c), std::end(c));
+            pop_heap(std::begin(c), std::end(c), heap_cmp);
             c.pop_back();
         }
 
         c.push_back(val);
-        push_heap(std::begin(c), std::end(c));
+        push_heap(std::begin(c), std::end(c), heap_cmp);
     }
 };
-
 
 template<typename Updater, typename Container, typename Samples>
 size_t test(Container &c, const size_t acc_lim, const Samples &samples, const size_t iters) {
     const Updater upd;
     for(const auto &i : boost::irange<size_t>(0, iters)) {
-        upd(c, samples[i % samples.size()], acc_lim);
+        upd(c, i, samples[i % samples.size()], acc_lim);
     }
 
     // cerr << "c.size: " << c.size() << '\n';
