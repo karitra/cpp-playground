@@ -7,9 +7,11 @@
 using namespace std;
 
 struct Foo {
-	
+
 	void inc(int to_add) { z += to_add; }
+	void inc(const double f) { x += f; }
 	
+	double x = 0.123;
 	int z = 125;
 };
 
@@ -29,12 +31,13 @@ int main(int argc, char **argv)
 {
 	auto add = (argc > 1) ? atoi(argv[1]) : 1310;
 
-	A a;
+	A a, b;
 
-	auto &ref = a.some_data.uptr;
+	auto &a_ref = a.some_data.uptr;
+	auto &b_ref = b.some_data.uptr;
 
 	//
-	// Resulting assambler for following code:
+	// Resulting assambler for following two C lines:
 	// 
    	//  4:	bb 1e 05 00 00       	mov    ebx,0x51e
 	// ...
@@ -42,9 +45,11 @@ int main(int argc, char **argv)
 	//
 	a.some_data.uptr->inc(add);
 	a.some_data.uptr->inc(add);
-	
-	ref->inc(add);
+	a_ref->inc(add);
+
+	b.some_data.uptr->inc(add + 1.0 * add);	
+ 	b_ref->inc(add - 2.0 * add);
  
-	return a.some_data.uptr->z;
+	return a.some_data.uptr->z + b_ref->x;
 }
 
