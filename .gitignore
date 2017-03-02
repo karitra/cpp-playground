@@ -2,3 +2,4 @@ a.out
 *.s
 *.o
 *.swp
+**/*.log
