@@ -1,1 +1,5 @@
-: foreach *.cc |> clang++-4.0 -std=c++1z -Wall -O2 %f -o %B.opt -lboost_system -lboost_thread |> %B.opt
+CXXFLAGS += -Wall
+CXXFLAGS += -O2
+CXXFLAGS += -std=c++1z 
+
+: foreach *.cc |> clang++-4.0 $(CXXFLAGS) %f -o ./build/%B -lboost_system -lboost_thread |> ./build/%B

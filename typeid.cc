@@ -15,7 +15,7 @@ namespace a {
 
 int main()
 {
-	a::b::Boo b;
+	// a::b::Boo b;
 	
 	cout << "typeid: " <<  typeid(a::b::Boo).name() << '\n';
 	return 0;
