@@ -1,0 +1,1 @@
+: foreach *.cc |> clang++-4.0 -std=c++1z -Wall -O2 %f -o %B -lboost_system -lboost_thread |> %B.opt
