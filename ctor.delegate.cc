@@ -9,7 +9,8 @@ struct A {
 		cerr << "ctor A()\n";
 	}
 
-	A(const char *a) : A() {
+	// Wonderfull: clang produces the warning!
+	A(const char *a) { //  A() {
 		cerr << "ctor A(const char *) " << a << '\n';
 	}
 

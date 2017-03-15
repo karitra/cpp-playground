@@ -58,7 +58,7 @@ struct direct_order_updater_t {
                 reformat(c);
         }
 
-        c.emplace(val, payload_t{val, val} );
+        c.emplace(val, payload_t{{val, val}} );
         if (c.size() > limit) {
             c.erase(c.begin());
         }
@@ -76,7 +76,7 @@ struct reverse_order_updater_t {
             c.erase(c.begin());
         }
 
-        c.emplace(val, payload_t{val, val} );
+        c.emplace(val, payload_t{{val, val}} );
     }
 };
 
