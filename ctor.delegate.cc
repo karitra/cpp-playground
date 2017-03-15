@@ -5,13 +5,13 @@ using namespace std;
 
 struct A {
 
-	/*
-	A() : A(10) {
+	A() : A("recur?") {
 		cerr << "ctor A()\n";
 	}
-	*/
 
-	A() = default;
+	A(const char *a) : A() {
+		cerr << "ctor A(const char *) " << a << '\n';
+	}
 
 	A(int x) : A(x, 0) {
 		cerr << "ctor A(int)\n";
