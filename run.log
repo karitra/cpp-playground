@@ -1,0 +1,25 @@
+iters: 10000000
+acc size: 100
+	map, direct order: total 459020 us, per update: 0.045902 us
+	map, reverse order: total 438632 us, per update: 0.0438632 us
+	set, direct order: total 462579 us, per update: 0.0462579 us
+	set, reverse order: total 437155 us, per update: 0.0437155 us
+	heap, reverse order: total 437825 us, per update: 0.0437825 us
+acc size: 500
+	map, direct order: total 464109 us, per update: 0.0464109 us
+	map, reverse order: total 440649 us, per update: 0.0440649 us
+	set, direct order: total 474350 us, per update: 0.047435 us
+	set, reverse order: total 453693 us, per update: 0.0453693 us
+	heap, reverse order: total 449224 us, per update: 0.0449224 us
+acc size: 1000
+	map, direct order: total 480549 us, per update: 0.0480549 us
+	map, reverse order: total 455068 us, per update: 0.0455068 us
+	set, direct order: total 489414 us, per update: 0.0489414 us
+	set, reverse order: total 468255 us, per update: 0.0468255 us
+	heap, reverse order: total 468549 us, per update: 0.0468549 us
+acc size: 10000
+	map, direct order: total 530912 us, per update: 0.0530912 us
+	map, reverse order: total 501668 us, per update: 0.0501668 us
+	set, direct order: total 535356 us, per update: 0.0535356 us
+	set, reverse order: total 505391 us, per update: 0.0505391 us
+	heap, reverse order: total 509143 us, per update: 0.0509143 us
