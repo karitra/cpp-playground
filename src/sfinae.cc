@@ -3,6 +3,10 @@
 #include <map>
 #include <vector>
 	
+#include <type_traits>
+
+#include <boost/current_function.hpp>
+
 using namespace std;
 
 template<class T>
@@ -12,16 +16,21 @@ template<class T, class Alloc>
 struct is_vector<std::vector<T,Alloc>> : std::true_type {};
 
 template<class Container>
-using is_vector_t = typename std::enable_if<is_vector<Container>::value>::type;
+using is_vector_void_type = typename std::enable_if<is_vector<Container>::value>::type;
+template<class Container>
+using is_not_vector_void_type = typename std::enable_if<!is_vector<Container>::value>::type;
+//template<class Container>
+//using is_not_vector_void_type = typename std::enable_if_t<!is_vector<Container>::value>;
+
 
 template<typename Container>
-auto proc(Container& c) -> typename std::enable_if<is_vector<Container>::value>::type
+auto proc(Container& c) -> is_vector_void_type<Container>
 {
 	cerr << "dealing with vector\n";
 }
 
 template<typename Container>
-auto proc(Container& c) -> typename std::enable_if<!is_vector<Container>::value>::type
+auto proc(Container& c) -> is_not_vector_void_type<Container>
 {
 	cerr << "some type\n";
 }
