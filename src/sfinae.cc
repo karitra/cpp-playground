@@ -19,9 +19,9 @@ template<class Container>
 using is_vector_void_type = typename std::enable_if<is_vector<Container>::value>::type;
 template<class Container>
 using is_not_vector_void_type = typename std::enable_if<!is_vector<Container>::value>::type;
-//template<class Container>
-//using is_not_vector_void_type = typename std::enable_if_t<!is_vector<Container>::value>;
 
+//template<class Container>
+//using typename boo_type = std::enable_if_t<!is_vector<Container>::value>;
 
 template<typename Container>
 auto proc(Container& c) -> is_vector_void_type<Container>
