@@ -1,10 +1,11 @@
-#include<iostream>
+#include <iostream>
+#include <map>
 
 using namespace std;
 
 struct A {
 	A(int zz) : z(zz) {
-		cerr << "A ctor\n";
+		cerr << "A ctor: " << zz << '\n';
 	}
 
 	A(const A &other) {
@@ -13,6 +14,10 @@ struct A {
 
 	A(A &&other) {
 		cerr << "A move\n";
+	}
+	
+    A(const A &&other) {
+		cerr << "A const move\n";
 	}
 
 	virtual ~A() {
@@ -48,5 +53,22 @@ int main()
 	const auto b = boo();
 
 	cerr << "b.z " << b.local.z << '\n';
+
+    std::map<int, A> am = {
+        {1, {100}},
+        {2, {200}},
+        {3, {300}}
+    };
+
+    cerr << "move iterators:\n";
+    std::map<int, A> am1;
+    
+    for(auto it = std::begin(am); it != std::end(am); ++it) {
+        am1.emplace(std::move(*it));
+    }
+
+    cerr << "clear am\n";
+    am.clear();
+    cerr << "clear am: done\n";
 }
 
