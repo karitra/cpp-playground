@@ -1,7 +1,12 @@
 #include <iostream>
 #include <map>
+#include <vector>
+
+#include <boost/range/numeric.hpp>
 
 using namespace std;
+
+struct aggregate_proxy_t;
 
 struct A {
 	A(int zz) : z(zz) {
@@ -10,7 +15,8 @@ struct A {
 
 	A(const A &other) {
 		cerr << "A copy\n"; 
-	}
+	    z = other.z;
+    }
 
 	A(A &&other) {
 		cerr << "A move\n";
@@ -25,7 +31,51 @@ struct A {
 	}
 
 	int z;
+
+    auto
+    operator=(aggregate_proxy_t&& arg) -> A&;
 };
+
+struct aggregate_proxy_t {
+
+    int val;
+
+    aggregate_proxy_t() : val{} {
+        cerr << "proxy ctor\n";
+    }
+ 
+    aggregate_proxy_t(const aggregate_proxy_t& other) {
+        cerr << "proxy copy ctor\n";
+        val = other.val;
+    }
+
+    aggregate_proxy_t(aggregate_proxy_t&& other) {
+        cerr << "proxy move ctor\n";
+        val = other.val;
+    }
+    
+    auto
+    operator=(const aggregate_proxy_t& other) -> aggregate_proxy_t& = default; 
+
+    ~aggregate_proxy_t() {
+        cerr << "proxy dtor\n";
+    }
+
+    auto
+    operator+(const A& arg) -> aggregate_proxy_t& {
+        cerr << "summation\n";
+        val += arg.z;
+        return *this;
+    }
+};
+    
+auto
+A::operator=(aggregate_proxy_t&& arg) -> A& 
+{
+    cerr << "move assigned to A\n";
+    this->z = arg.val; // std::move(arg.val);
+    return *this;
+}
 
 struct B 
 {
@@ -70,5 +120,17 @@ int main()
     cerr << "clear am\n";
     am.clear();
     cerr << "clear am: done\n";
+
+    cerr << "\nsummation test\n";
+    std::vector<A> avec = { {1}, {2}, {3}, {4} };
+
+    for(const auto& v : avec) {
+        cerr << "val = " << v.z << '\n';
+    }
+
+    A x{0};
+    x = boost::accumulate(avec, aggregate_proxy_t{});
+
+    cerr << "x.z = " << x.z << '\n';
 }
 
