@@ -107,8 +107,9 @@ int main()
     std::map<int, A> am = {
         {1, {100}},
         {2, {200}},
-        {3, {300}}
-    };
+        {3, {300}},
+        {4, {300}}
+     };
 
     cerr << "move iterators:\n";
     std::map<int, A> am1;
@@ -120,6 +121,25 @@ int main()
     cerr << "clear am\n";
     am.clear();
     cerr << "clear am: done\n";
+
+    std::map<int, A> am2;
+
+    cerr << "copy_if with move iterator\n";
+
+    std::copy_if(
+        std::make_move_iterator(std::begin(am1)), 
+        std::make_move_iterator(std::end(am1)), 
+        std::inserter(am2, std::end(am2)),
+        [] (const std::pair<int, A> &el) {
+            return el.first % 2;
+        }
+    );
+
+    cerr << "am2 content:\n";
+    for(const auto& el : am2) {
+        cerr << "\tk = " << el.first 
+             << "\tv = " << el.second.z << '\n';  
+    }
 
     cerr << "\nsummation test\n";
     std::vector<A> avec = { {1}, {2}, {3}, {4} };
