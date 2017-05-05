@@ -1,5 +1,7 @@
+#CXX = g++
+CXX = clang++-4.0 
 CXXFLAGS += -Wall
 CXXFLAGS += -O2
-CXXFLAGS += -std=c++1z 
+CXXFLAGS += -std=c++1y
 
-: foreach ./src/*.cc |> clang++-4.0 $(CXXFLAGS) %f -lboost_system -lboost_thread -o ./build/%B |> ./build/%B
+: foreach ./src/*.cc |> $(CXX) $(CXXFLAGS) %f -lboost_system -lboost_thread -o ./build/%B |> ./build/%B
