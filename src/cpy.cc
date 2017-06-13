@@ -4,6 +4,7 @@
 // ctor sequence
 //
 #include <iostream>
+#include <memory>
 
 using namespace std;
 
@@ -13,9 +14,10 @@ struct Base {
 
 struct Y {
     Y(int a, int b, int c) {}
+    int boo[4];
 };
 
-struct Q { int a; int b; int c; Base base;};
+struct Q { int a; int b; int c; Base base; Q() = default;};
 
 struct Qd { 
     int a; 
@@ -112,4 +114,13 @@ int main()
     cerr << "Q6: " << q6.a << q6.b << q6.c << q6.base.i << '\n';
 
     Y y = {1,2,3};
+
+    auto boo = std::make_shared<Y>(1,2,3);
+    auto foo = unique_ptr<Y>( new Y{1,2,3});
+
+    cerr << "sizeof(int) " << sizeof(int) << '\n';
+    cerr << "sizeof(Y): " << sizeof(boo) << '\n';
+
+    cerr << "sizeof(): " << sizeof(foo) << '\n';
 }
+
