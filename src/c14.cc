@@ -11,8 +11,10 @@ int main() {
 	std::vector<int> a;
         a += 1,2,3,4;
 
+#if 0
 	for_each(begin(a), end(a), [] (const auto &z) -> void {
 		std::cerr << z << '\n';
 	});
+#endif
 }
 

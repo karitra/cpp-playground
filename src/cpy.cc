@@ -33,12 +33,31 @@ struct Qd {
 
 
 struct Z {
+
+    struct {
+        int a;
+        int b;
+    } data;
+
     Z() {
         cerr << "ctor(Z)\n";
     }
 
     Z(const Z&) {
         cerr << "cpy(Z)\n";
+    }
+};
+
+struct X : Z {
+    using Z::Z;
+};
+
+struct R : Z {
+    
+    auto foo() -> void {
+        X x;
+        x.data = this->data;
+        // X xx{static_cast<Z&>(*this)};
     }
 };
 
@@ -122,5 +141,8 @@ int main()
     cerr << "sizeof(Y): " << sizeof(boo) << '\n';
 
     cerr << "sizeof(): " << sizeof(foo) << '\n';
+
+    R r;
+    r.foo();
 }
 

@@ -5,7 +5,6 @@
 using namespace std;
 
 int main() {
-
 	auto t = make_tuple(1, "hello");
 	auto &[i, s] = t;
 	const auto &sss = std::string("world");
