@@ -4,3 +4,4 @@ a.out
 *.swp
 **/*.log
 .tup
+/build
