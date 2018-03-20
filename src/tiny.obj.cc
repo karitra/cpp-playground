@@ -21,6 +21,10 @@ struct foo_t {
     char payload;
     int zoo;
 };
+
+struct z_t {
+    char b : 1;
+};
  
 auto main(int argc, char *argv[]) -> int {
     std::vector<boo_t> v(7);
@@ -33,6 +37,7 @@ auto main(int argc, char *argv[]) -> int {
 
     std::cout << "sizeof boo_t: " << sizeof(boo_t) << '\n';
     std::cout << "sizeof foo_t: " << sizeof(foo_t) << '\n';
+    std::cout << "sizeof z_t: " << sizeof(z_t) << '\n';
     std::cout << "sizeof int: " << sizeof(boo_t) << '\n';
   
     std::cout << "data size in v: " << (&v[10] - &v[0]) << '\n';
